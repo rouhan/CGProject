@@ -7,18 +7,25 @@
 #include<Windows.h>
 #include<math.h>
 #include<string.h>
+
 using namespace std;
 using std::string;
 
 void PlayerScreen(void);
+void screen3(string);
 void cross(GLint,GLint);
 void DrawCircle(float, float, float, int);
+void gamemark(int, int);
+void gamecheck(int , int , int );
 
 int screenwidth = 900; int screenheight = 600;
-int i = 0;
+int i,a,b,c,d,e,f,g,h,t,k = 0;
 int tic = 0;
 int player2 = 0;
 int comp = 0;
+int play[10];
+int board[3][3] ;
+int turn1 = 1, turn2;
 //static int numVerts = 2;
 //static int i = 2;
 
@@ -130,12 +137,30 @@ void screen2()
 	glVertex2f(530, 200);
 	glVertex2f(530, 500);
 	glEnd();
+	i = 2;
 
 	glFlush();
 
 
 }
+void screen3(string naam)
+{
+	
+	glColor3f(1.0, 1.0, 1.0);
+	glBegin(GL_LINE_LOOP); //For Score boundry
+	glVertex2f(200, 200);
+	glVertex2f(200, 500);
+	glVertex2f(700, 500);
+	glVertex2f(700, 200);
+	glEnd();
 
+	glColor3f(1.0, 0.0, 0.0); 
+	bitmap_output(370, 180, naam, GLUT_BITMAP_TIMES_ROMAN_24);
+
+	glFlush();
+
+
+}
 void PlayerScreen()
 {
 
@@ -146,6 +171,7 @@ void PlayerScreen()
 	glVertex2f(170, 130);
 	glVertex2f(170, 80);
 	glEnd();
+	glColor3f(0.0, 0.0, 0.0);
 	bitmap_output(100, 70, "PLAYER 1", GLUT_BITMAP_TIMES_ROMAN_24);
 	cross(125,85);
 	
@@ -198,7 +224,180 @@ void DrawCircle(float cx, float cy, float r, int num_segments)
 
 	}
 	glEnd();
+	glFlush();
 }
+void gameplay(int x,int y)
+{
+
+	if ((x >= 200 && x <= 350) && (y >= 390 && y <= 500) && g == 0)//3rd row
+	{
+
+		g = 1; gamemark(240, 420);
+	}
+	if ((x >= 350 && x <= 530) && (y >= 390 && y <= 500) && h == 0)
+	{
+		h = 1; gamemark(390, 420);
+	}
+	if ((x >= 530 && x <= 700) && (y >= 390 && y <= 500) && t == 0)
+	{
+		t = 1; gamemark(570, 420);
+	}
+
+	if ((x >= 200 && x <= 350) && (y >= 290 && y <= 390) && d == 0) // 2nd Row
+	{
+		d = 1; gamemark(240, 310);
+	}
+	if ((x >= 350 && x <= 530) && (y >= 290 && y <= 390) && e == 0)
+	{
+		e = 1; gamemark(390, 310);
+	}
+	if ((x >= 530 && x <= 700) && (y >= 290 && y <= 390) && f == 0)
+	{
+		f = 1; gamemark(570, 310);
+	}
+
+	if ((x >= 200 && x <= 350) && (y >= 200 && y <= 290) && a == 0)  //1st row
+	{
+		a = 1; gamemark(240, 230);
+	}
+	if ((x >= 350 && x <= 530) && (y >= 200 && y <= 290) && b == 0)
+	{
+		b = 1; gamemark(390, 230); //420 250
+	}
+	if ((x >= 530 && x <= 700) && (y >= 200 && y <= 290) && c == 0)
+	{
+		c = 1; gamemark(570, 230);
+	}
+}
+void gamemark(int x,int y)
+{
+	int value;
+	if (turn1 == 1)
+	{
+		cross(x,y);
+		value = 1;
+		gamecheck(x,y,value);
+		turn1 = 0;
+		turn2 = 1;
+		
+	}
+	else if (turn2 == 1)
+	{
+		turn1 = 1;
+		turn2 = 0;
+		value = 2;
+		gamecheck(x,y,value);
+		DrawCircle(x+30, y+20, 20, 30);
+	}
+}
+void gamecheck(int x, int y,int val)
+{
+
+	if ((x >= 200 && x <= 350) && (y >= 390 && y <= 500))//3rd row
+	{
+		board[2][0] = val;
+	}
+	if ((x >= 350 && x <= 530) && (y >= 390 && y <= 500))
+	{
+		board[2][1] = val;
+	}
+	if ((x >= 530 && x <= 700) && (y >= 390 && y <= 500))
+	{	
+		board[2][2] = val;
+	}
+
+	
+	if ((x >= 200 && x <= 350) && (y >= 290 && y <= 390)) // 2nd Row
+	{
+		board[1][0] = val;
+	}
+	if ((x >= 350 && x <= 530) && (y >= 290 && y <= 390))
+	{	
+		board[1][1] = val;
+	}
+	if ((x >= 530 && x <= 700) && (y >= 290 && y <= 390))
+	{	
+		board[1][2] = val;
+	}
+
+	
+	if ((x >= 200 && x <= 350) && (y >= 200 && y <= 290))  //1st row
+	{
+		board[0][0] = val;
+	}
+	if ((x >= 350 && x <= 530) && (y >= 200 && y <= 290))
+	{
+		board[0][1] = val;
+	}
+	if ((x >= 530 && x <= 700) && (y >= 200 && y <= 290))
+	{
+		board[0][2] = val;
+	}
+
+	for (int i = 0; i < 3; i++)//Check for a win
+	{
+		if (board[i][0] != 0)
+		{
+			if ((board[i][0] == board[i][1] && board[i][1] == board[i][2]))
+			{
+				if (val == 1)
+				{
+					screen3("Player1 Wins");
+				}
+				else if (val == 2)
+				{
+					screen3("Player2 Wins");//Player 2 Wins
+				}
+			}
+		}
+		
+		if  (board[0][i] != 0)
+		{
+			if ((board[0][i] == board[1][i] && board[1][i] == board[2][i]))
+			{
+				if (val == 1)
+				{
+					screen3("Player1 Wins");
+				}
+				else if (val == 2)
+				{
+					screen3("Player2 Wins");//Player 2 Wins
+				}
+			}
+		}
+		if (board[1][1] != 0)
+		{
+			if ((board[0][0] == board[1][1] && board[1][1] == board[2][2]))
+			{
+				if (val == 1)
+				{
+					screen3("Player1 Wins");
+				}
+				else if (val==2)
+				{
+					screen3("Player2 Wins");//Player 2 Wins
+				}
+			}
+		}
+		if (board[1][1] != 0)
+		{
+			if ((board[0][2] == board[1][1] && board[1][1] == board[2][0]))
+			{
+				if (val == 1)
+				{
+					screen3("Player1 Wins");
+				}
+				else if (val == 2)
+				{
+					screen3("Player2 Wins");//Player 2 Wins
+				}
+			}
+		}
+		
+	}
+
+}
+
 void cross(GLint x, GLint y)
 {
 	glColor3f(0.0, 0.0, 0.0);
@@ -223,11 +422,16 @@ void myMouse(int button, int state, int x, int y)
 	
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
-		
+		if (k!=9 && i==2)
+		{
+			gameplay(x, y);
+			k++;
+		}
 		if (i == 1)
 		{
 			if ((x >= 280 && x <= 360) && (y >= 200 && y <= 250))
 			screen2();
+			
 		}
 		else
 		{
@@ -245,6 +449,7 @@ void myMouse(int button, int state, int x, int y)
 				}
 			}
 		}
+		
 	}
 }
 
