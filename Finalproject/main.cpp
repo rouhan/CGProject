@@ -7,6 +7,7 @@
 #include<Windows.h>
 #include<math.h>
 #include<string.h>
+#include <time.h>
 
 using namespace std;
 using std::string;
@@ -17,6 +18,7 @@ void cross(GLint,GLint);
 void DrawCircle(float, float, float, int);
 void gamemark(int, int);
 void gamecheck(int , int , int );
+int computerplay();
 
 int screenwidth = 900; int screenheight = 600;
 int i,a,b,c,d,e,f,g,h,t,k = 0;
@@ -26,21 +28,13 @@ int comp = 0;
 int play[10];
 int board[3][3] ;
 int turn1 = 1, turn2;
+int pos1 = 1, pos2 = 2, pos3 = 3, pos4 = 4, pos5 = 5, pos6 = 6, pos7 = 7, pos8 = 8, pos9 = 9;
+int con=0;
+
 //static int numVerts = 2;
 //static int i = 2;
 
 class GLintPoint{ public: GLint x, y; };
-
-//#define NUM 100
-//static GLintPoint List[NUM];
-//static int last = -1;
- 
-//void drawDot(GLint x, GLint y)
-//{ // draw dot at integer point (x, y) 
-//	glBegin(GL_POINTS);
-//	glVertex2i(x, y);
-//	glEnd();
-//}
 GLintPoint CP;
 
 void moveto(GLint x, GLint y)
@@ -156,7 +150,7 @@ void screen3(string naam)
 
 	glColor3f(1.0, 0.0, 0.0); 
 	bitmap_output(370, 180, naam, GLUT_BITMAP_TIMES_ROMAN_24);
-
+	k = 11;
 	glFlush();
 
 
@@ -263,12 +257,111 @@ void gameplay(int x,int y)
 	}
 	if ((x >= 350 && x <= 530) && (y >= 200 && y <= 290) && b == 0)
 	{
-		b = 1; gamemark(390, 230); //420 250
+		b = 1; gamemark(390, 230); 
 	}
 	if ((x >= 530 && x <= 700) && (y >= 200 && y <= 290) && c == 0)
 	{
 		c = 1; gamemark(570, 230);
 	}
+}
+void gameplay2(int x,int y)
+{
+	if (turn1 == 1 )
+	{
+
+		if ((x >= 200 && x <= 350) && (y >= 390 && y <= 500) && g == 0)//3rd row
+		{
+			g = 1; gamemark(240, 420);
+		}
+		if ((x >= 350 && x <= 530) && (y >= 390 && y <= 500) && h == 0)
+		{
+			h = 1; gamemark(390, 420);
+		}
+		if ((x >= 530 && x <= 700) && (y >= 390 && y <= 500) && t == 0)
+		{
+			t = 1; gamemark(570, 420);
+		}
+
+		if ((x >= 200 && x <= 350) && (y >= 290 && y <= 390) && d == 0) // 2nd Row
+		{
+			d = 1; gamemark(240, 310);
+		}
+		if ((x >= 350 && x <= 530) && (y >= 290 && y <= 390) && e == 0)
+		{
+			e = 1; gamemark(390, 310);
+		}
+		if ((x >= 530 && x <= 700) && (y >= 290 && y <= 390) && f == 0)
+		{
+			f = 1; gamemark(570, 310);
+		}
+
+		if ((x >= 200 && x <= 350) && (y >= 200 && y <= 290) && a == 0)  //1st row
+		{
+			a = 1; gamemark(240, 230);
+		}
+		if ((x >= 350 && x <= 530) && (y >= 200 && y <= 290) && b == 0)
+		{
+			b = 1; gamemark(390, 230);
+		}
+		if ((x >= 530 && x <= 700) && (y >= 200 && y <= 290) && c == 0)
+		{
+			c = 1; gamemark(570, 230);
+		}
+	}
+	
+	
+	
+	if (a != 1 || b != 1 || c != 1 || d != 1 || e != 1 || f != 1 || g != 1 || h != 1 || t != 1)
+	{
+		con = computerplay();
+
+		if (con == pos1&& a != 1)
+		{
+			gamemark(240, 230);
+			a = 1;
+		}
+		else if (con == pos2 && b != 1)
+		{
+			gamemark(390, 230);
+			b = 1;
+		}
+		else if (con == pos3&& c != 1)
+		{
+			gamemark(570, 230);
+			c = 1;
+		}
+		else if (con == pos4&& d != 1)
+		{
+			d = 1; gamemark(240, 310);
+		}
+		else if (con == pos5 && e != 1)
+		{
+			e = 1; gamemark(390, 310);
+		}
+		else if (con == pos6&& f != 1)
+		{
+			f = 1; gamemark(570, 310);
+		}
+		else if (con == pos7 && g != 1)
+		{
+			g = 1; gamemark(240, 420);
+		}
+		else if (con == pos8&& h != 1)
+		{
+			h = 1; gamemark(390, 420);
+		}
+		else if (con == pos9 && t != 1)
+		{
+			t = 1; gamemark(570, 420);
+		}
+		else
+		{
+			gameplay2(x, y);
+		}
+
+	}
+	
+
 }
 void gamemark(int x,int y)
 {
@@ -293,6 +386,15 @@ void gamemark(int x,int y)
 }
 void gamecheck(int x, int y,int val)
 {
+	string konjeeta;
+	if (comp == 1)
+	{
+		konjeeta = "Computer Win";
+	}
+	else if (player2 == 1)
+	{
+		konjeeta = "Player 2 Win";
+	}
 
 	if ((x >= 200 && x <= 350) && (y >= 390 && y <= 500))//3rd row
 	{
@@ -348,7 +450,7 @@ void gamecheck(int x, int y,int val)
 				}
 				else if (val == 2)
 				{
-					screen3("Player2 Wins");//Player 2 Wins
+					screen3(konjeeta);//Player 2 Wins
 					a = b = c = d = e = f = g = h = t = 1;
 				}
 			}
@@ -365,7 +467,7 @@ void gamecheck(int x, int y,int val)
 				}
 				else if (val == 2)
 				{
-					screen3("Player2 Wins");//Player 2 Wins
+					screen3(konjeeta);//Player 2 Wins
 					a = b = c = d = e = f = g = h = t = 1;
 				}
 			}
@@ -381,7 +483,7 @@ void gamecheck(int x, int y,int val)
 				}
 				else if (val==2)
 				{
-					screen3("Player2 Wins");//Player 2 Wins
+					screen3(konjeeta);//Player 2 Wins
 					a = b = c = d = e = f = g = h = t = 1;
 				}
 			}
@@ -397,7 +499,7 @@ void gamecheck(int x, int y,int val)
 				}
 				else if (val == 2)
 				{
-					screen3("Player2 Wins");//Player 2 Wins
+					screen3(konjeeta);//Player 2 Wins
 					a = b = c = d = e = f = g = h = t = 1;
 				}
 			}
@@ -407,6 +509,15 @@ void gamecheck(int x, int y,int val)
 
 }
 
+int computerplay()
+{
+	int v1;
+	
+	
+	v1 = rand() % 9+1;
+	return v1;
+
+}
 void cross(GLint x, GLint y)
 {
 	glColor3f(0.0, 0.0, 0.0);
@@ -431,11 +542,21 @@ void myMouse(int button, int state, int x, int y)
 	
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
 	{
-		if (k!=9 && i==2)
+		if (k != 10 && i == 2 && player2 == 1 )
 		{
 			gameplay(x, y);
 			k++;
 		}
+		if (k != 9 && i == 2 && comp == 1)
+		{
+			gameplay2(x,y);
+			k++;
+		}
+		if (k==10)
+		{
+			screen3("DRAW");
+		}
+
 		if (i == 1)
 		{
 			if ((x >= 280 && x <= 360) && (y >= 200 && y <= 250))
