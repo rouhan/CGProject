@@ -212,6 +212,7 @@ void tick(GLint x,GLint y)
 }
 void DrawCircle(float cx, float cy, float r, int num_segments)
 {
+	glColor3f(0.0, 0.0, 0.0);
 	glBegin(GL_LINE_LOOP);
 	for (int ii = 0; ii < num_segments; ii++)
 	{
@@ -343,10 +344,12 @@ void gamecheck(int x, int y,int val)
 				if (val == 1)
 				{
 					screen3("Player1 Wins");
+					a = b = c = d = e = f = g = h = t = 1;
 				}
 				else if (val == 2)
 				{
 					screen3("Player2 Wins");//Player 2 Wins
+					a = b = c = d = e = f = g = h = t = 1;
 				}
 			}
 		}
@@ -358,10 +361,12 @@ void gamecheck(int x, int y,int val)
 				if (val == 1)
 				{
 					screen3("Player1 Wins");
+					a = b = c = d = e = f = g = h = t = 1;
 				}
 				else if (val == 2)
 				{
 					screen3("Player2 Wins");//Player 2 Wins
+					a = b = c = d = e = f = g = h = t = 1;
 				}
 			}
 		}
@@ -372,10 +377,12 @@ void gamecheck(int x, int y,int val)
 				if (val == 1)
 				{
 					screen3("Player1 Wins");
+					a = b = c = d = e = f = g = h = t = 1;
 				}
 				else if (val==2)
 				{
 					screen3("Player2 Wins");//Player 2 Wins
+					a = b = c = d = e = f = g = h = t = 1;
 				}
 			}
 		}
@@ -386,10 +393,12 @@ void gamecheck(int x, int y,int val)
 				if (val == 1)
 				{
 					screen3("Player1 Wins");
+					a = b = c = d = e = f = g = h = t = 1;
 				}
 				else if (val == 2)
 				{
 					screen3("Player2 Wins");//Player 2 Wins
+					a = b = c = d = e = f = g = h = t = 1;
 				}
 			}
 		}
